@@ -1,0 +1,79 @@
+/* Copyright (C) 2016 Jeff Irion */
+#unit-converter {
+  width: 300px;
+  height: 93px;
+  border: 3px black solid;
+	margin: 10px auto;
+	padding: 5px;
+	border-radius: 10px;
+  float: left;
+  font-size: 16px;
+  text-align: center;
+}
+#meet-info {
+  float: left;
+  font-size: 14pt;
+}
+#meet-numbers {
+  width: 100%;
+  border: 3px black solid;
+	margin: 10px auto;
+	padding: 5px;
+  padding-bottom: 0px;
+	border-radius: 10px;
+  float: left;
+}
+#meet-numbers div {
+  display: inline-block;
+  width: 24.25%;
+  font-size: 16pt;
+  text-align: center;
+}
+#meet-numbers input {
+  width: 60px;
+  text-align: right;
+}
+#meet-output {
+  width: 100%;
+  height: 300px;
+  /* border: 3px black solid;*/
+	margin: 10px auto;
+	padding: 5px;
+  padding-top: 0px;
+	border-radius: 10px;
+  float: left;
+}
+#meet-output div {
+  display: inline-block;
+  width: 24%;
+  font-size: 16pt;
+  text-align: center;
+}
+/*http://stackoverflow.com/a/20566735*/
+.column-left{ float: left; width: 33%; padding-bottom: 5px; padding-top: 5px;}
+.column-right{ float: right; width: 33%; padding-bottom: 5px; padding-top: 5px;}
+.column-center{ display: inline-block; width: 33%; padding-bottom: 5px; padding-top: 5px;}
+
+.column {
+    float: left;
+    position: relative;
+    width: 25%;
+}
+.column-offset-1 {
+    left: 25%;
+}
+.column-offset-2 {
+    left: 50%;
+}
+.column-offset-3 {
+    left: 75%;
+}
+.column-inset-1 {
+    left: -25%;
+}
+.column-inset-2 {
+    left: -50%;
+}
+.column-inset-3 {
+    left: -75%;
+}

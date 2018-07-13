@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+  <!-- Copyright (C) 2016 Jeff Irion -->
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Powerlifting Calculator : Calculate your total, Wilks score, Malone score, and more.">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="../stylesheets/stylesheet.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="powerlifting.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+		<script src="script.js"></script>
+
+    <title>Powerlifting Calculator</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="home_banner" href="https://jefflirion.github.io/">JeffLIrion.github.io</a>
+          <h1 id="project_title">Powerlifting Calculator</h1>
+          <h2 id="project_tagline">Calculate your total, Wilks score, Malone score, and more.</h2>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+
+      <!-- unit converter -->
+      <section id="main_content" class="inner">
+        <h2 id="lbs-kg-converter">lbs &nbsp; &#8644; &nbsp; kg</h2>
+
+        <p>The calculator below will convert between lbs and kg behind the scenes, but in case you'd like to see the conversion, here's a simple calculator.</p>
+
+        <div id="unit-converter">
+          <!-- Row 1: lbs to kg -->
+          <div id="lbs-to-kg">
+            <div class="column-left">
+              <input type="text" id="lbs-input" style="width:50px; text-align:right;" onkeypress="return allowOnlyNumbers()"><strong> lbs. </strong>
+            </div>
+            <div class="column-center">
+              <button type="button" class="button" style="width:80px; align: center;" onclick="lbstokg()">
+                <span>
+                  <span>&mdash; kg &rarr;</span>
+                </span>
+              </button>
+            </div>
+            <div class="column-right">
+              <div style="text-align:center;"><span id="kg-output"></span></div>
+            </div>
+          </div><br>
+          <!-- Row 2: kg to lbs -->
+          <div id="kg-to-lbs">
+            <div class="column-left">
+              <div style="text-align:center;"><span id="lbs-output"></span></div>
+            </div>
+            <div class="column-center">
+              <button type="button" class="button" style="width:80px; text-align: center;" onclick="kgtolbs()">
+                <span>
+                  <span>&larr; lbs &mdash;</span>
+                </span>
+              </button>
+            </div>
+            <div class="column-right">
+              &nbsp; <input type="text" id="kg-input" style="width:50px; text-align:right;" onkeypress="return allowOnlyNumbers()"><strong> kg </strong>
+            </div>
+          </div>
+        </div>
+        <div style="clear: both;"></div>
+      </section>
+
+
+
+
+
+        <section id="main_content" class="inner">
+          <h2 id="meet-calculator">Powerlifting Meet Calculator</h2>
+
+          <!--<p><strong>Meet is held in:</strong> select "kg" if the meet is using kg plates, otherwise select "lbs."</p>-->
+
+          <!-- meet info -->
+          <div id="meet-info" style="padding-top: 10px;">
+            <div style="padding-bottom: 8px;">
+              <strong>Gender: </strong>&ensp;<select name="gender" id="gender">
+                  <option value="m">Male</option>
+                  <option value="f">Female</option>
+              </select>
+            </div>
+            <div class="form-group" style="padding-bottom: 8px;">
+              <strong>Units: </strong>&ensp;<select name="units" id="units">
+                  <option value="lbs.">lbs</option>
+                  <option value="kg">kg</option>
+              </select>
+            </div>
+            <div class="form-group" style="padding-bottom: 16px;">
+              <strong>Meet is held in: </strong>&ensp;<select name="meet-units" id="meet-units">
+                  <option value="kg">kg</option>
+                  <option value="lbs.">lbs</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- meet numbers -->
+          <div id="meet-numbers">
+            <div style="text-decoration: underline;"></div>
+            <div style="text-decoration: underline;"><strong>Lifter 1 (You)<strong></div>
+            <div style="text-decoration: underline;"><strong>Lifter 2</strong></div>
+            <div style="text-decoration: underline;"><strong>Lifter 3</strong></div>
+            <div style="padding-bottom: 12px;"><strong>Body Weight</strong></div>
+            <div style="padding-bottom: 12px;"><input type="text" id="bodyweight1" onkeypress="return allowOnlyNumbers()"></div>
+            <div style="padding-bottom: 12px;"><input type="text" id="bodyweight2" onkeypress="return allowOnlyNumbers()"></div>
+            <div style="padding-bottom: 12px;"><input type="text" id="bodyweight3" onkeypress="return allowOnlyNumbers()"></div>
+            <div><strong>Squat</strong></div>
+            <div><input type="text" id="squat1" onkeypress="return allowOnlyNumbers()"></div>
+            <div><input type="text" id="squat2" onkeypress="return allowOnlyNumbers()"></div>
+            <div><input type="text" id="squat3" onkeypress="return allowOnlyNumbers()"></div>
+            <div><strong>Bench</strong></div>
+            <div><input type="text" id="bench1" onkeypress="return allowOnlyNumbers()"></div>
+            <div><input type="text" id="bench2" onkeypress="return allowOnlyNumbers()"></div>
+            <div><input type="text" id="bench3" onkeypress="return allowOnlyNumbers()"></div>
+            <div><strong>Deadlift</strong></div>
+            <div><input type="text" id="dead1" onkeypress="return allowOnlyNumbers()"></div>
+            <div><input type="text" id="dead2" onkeypress="return allowOnlyNumbers()"></div>
+            <div><input type="text" id="dead3" onkeypress="return allowOnlyNumbers()"></div>
+            <div style="padding-top: 12px;"><strong>Desired Total</strong></div>
+            <div style="padding-top: 12px;"><input type="text" id="desiredtotal" onkeypress="return allowOnlyNumbers()"></div>
+            <div style="padding-top: 12px;"></div>
+            <div style="padding-top: 12px;"></div>
+            <div style="padding-top: 3px; padding-bottom: 3px;">
+              <button type="button" class="button" style="width:80px; text-align: center;" onclick="calculate()">
+                <span>
+                  <span>Calculate</span>
+                </span>
+              </button>
+            </div>
+          </div>
+          <div style="clear: both;"></div>
+
+          <!-- calculator output -->
+          <div id="meet-output">
+            <div id="totaltext"></div>
+            <div id="total1"></div>
+            <div id="total2"></div>
+            <div id="total3"></div>
+            <div id="wilkstext"></div>
+            <div id="wilks1"></div>
+            <div id="wilks2"></div>
+            <div id="wilks3"></div>
+            <div id="malonetext"></div>
+            <div id="malone1"></div>
+            <div id="malone2"></div>
+            <div id="malone3"></div>
+            <!-- messages -->
+            <div id="reqdead" style="width: 100%; text-align: left; padding-top: 10px;"></div>
+            <div id="beattotal" style="width: 100%; text-align: left; padding-top: 10px;"></div>
+            <div id="beatWilks" style="width: 100%; text-align: left; padding-top: 10px;"></div>
+            <div id="beatMalone" style="width: 100%; text-align: left; padding-top: 10px;"></div>
+          </div>
+          <div style="clear: both;"></div>
+
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Webpage maintained by <a href="https://github.com/JeffLIrion">JeffLIrion</a></p>
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+
+
+  </body>
+</html>
