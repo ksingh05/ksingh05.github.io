@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Jeff Irion : ">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+    <script src="script.js"></script>
+
+    <title>Jeff Irion</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <h1 id="project_title">Karanpreet Singh</h1>
+          <br>
+          <h2 id="project_tagline"><a href="https://github.com/ksingh05" style="color:white; border: 2px solid #0090ff; padding: 10px 10px 10px 10px; border-radius:5px;">
+              <img src="images/mark-github.svg" style="border: none; box-shadow: none; vertical-align:middle; padding:0 10px 0 0;"></img>Follow me on GitHub
+            </a>
+          </h2>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+
+        <h2>
+        <a id="about-me" class="anchor" href="#about-me" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>About Me</h2>
+
+        <p>I received my Ph.D. in Applied Mathematics from UC Davis in December 2015 and am currently working on the data mining research team at Bosch.  </p><br>
+        <a href="https://www.linkedin.com/in/ksingh05" style="text-decoration:none;">
+            <img src="https://static.licdn.com/scds/common/u/img/webpromo/btn_myprofile_160x33.png" width="160" height="33" border="0" alt="View Jeff Irion's profile on LinkedIn" style="padding:0px;">
+        </a>
+        <h3><a href="JeffIrion_Resume.pdf">My resume</a></h3>
+        <h3><a id="my-email" class="anchor" href="#my-email" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>My email</h3>
+          <div id="email-question">
+            <div class="column-left">
+              To see my email, answer this question: what is my degree in?  (Hint: look a few lines up in the "About Me" section)<br><br><input type="text" id="email-answer" onkeydown="if (event.keyCode == 13) getemail()" style="width:150px; text-align:left;">
+              <button type="button" class="button" style="width:80px; align:center;" onclick="getemail()">
+                <span>
+                  <span>Submit</span>
+                </span>
+              </button>
+            </div>
+            <div class="column-right">
+              <div style="text-align:center; height:60px;"><span id="email-decoded" style="line-height:60px; font-size:16pt;"></span></div>
+            </div>
+          </div>
+        <br>
+
+        <h2>
+        <a id="math-and-coding" class="anchor" href="#math-and-coding" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Math and Coding</h2>
+
+        <h3>
+        <a id="publications-and-presentations" class="anchor" href="#publications-and-presentations" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><a href="https://ksingh05.github.io/publications_and_presentations/">Publications &amp; Presentations</a>
+        </h3>
+
+        <p>Selected publications and presentations from my graduate research in applied math.  </p>
+        <br>
+
+        <h3>
+        <a id="udacity" class="anchor" href="#udacity" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><a href="https://ksingh05.github.io/udacity">Udacity</a>
+        </h3>
+
+        <p>Work that I've done for Udacity's self-driving car nanodegree and various data science courses.</p>
+        <br>
+
+        <h3>
+        <a id="multiscale-transforms-for-signals-on-graphs-mtsg-toolbox-for-matlab" class="anchor" href="#multiscale-transforms-for-signals-on-graphs-mtsg-toolbox-for-matlab" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><a href="https://github.com/ksingh05/MTSG_Toolbox">Multiscale Transforms for Signals on Graphs (MTSG) Toolbox for MATLAB</a>
+        </h3>
+
+        <p>This toolbox contains implementations of the transforms and methods that I developed during my graduate research.  It can be used to easily reproduce figures from several publications as well as my dissertation.  Here is a video demonstration:</p>
+        <iframe width="720" height="405" src="https://www.youtube.com/embed/8E5lDAt9y64" frameborder="0" allowfullscreen></iframe>
+        <br>
+        <br>
+
+        <h3>
+        <a id="math-course-notes" class="anchor" href="#math-course-notes" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><a href="https://ksingh05.github.io/Math-Course-Notes/">Math Course Notes</a>
+        </h3>
+
+        <p>Notes from various courses that I took at UC Davis.  </p>
+        <br>
+
+        <h3>
+        <a id="miscellaneous-matlab-code" class="anchor" href="#miscellaneous-matlab-code" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><a href="https://ksingh05.github.io/matlab/">Miscellaneous MATLAB Code</a>
+        </h3>
+
+        <p>Some useful functions and scripts that I've written for MATLAB.  </p>
+        <ul>
+          <li><a href="./matlab/dct1.m">dct1.m</a> - Perform the DCT-I transform on the column(s) of <code>f</code>. </li>
+          <li><a href="./matlab/idct1.m">idct1.m</a> - Perform the inverse DCT-I transform on the column(s) of <code>d</code>.  </li>
+          <li><a href="./matlab/nav.m">nav.m</a> - This script allows you to easily navigate between directories. It was designed to make navigation easier and faster when using MATLAB via a terminal. This script can also be used to run scripts. </li>
+          <li><a href="./matlab/unique_stable.m">unique_stable.m</a> - <code>[c,ia,ic] = unique_stable(a);</code> Returns the values of <code>c</code> in the same order as in <code>a</code>. This is equivalent to <code>[c,ia,ic] = unique(c,'stable');</code> in newer versions of MATLAB. </li>
+        </ul>
+        <br>
+
+        <h3>
+        <a id="home-assistant-info" class="anchor" href="#home-assistant-info" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><a href="https://ksingh05.github.io/home-assistant-info">Home Assistant Info</a>
+        </h3>
+
+
+        <p><strong>The best powerlifting calculator on the internet!</strong></p>
+        <ul>
+          <li>Calculate your total, Wilks score, and Malone score.</li>
+          <li>Converts between lbs and kg behind the scenes so that you know <em>EXACTLY</em> what your total is and what you need to hit.</li>
+          <li>After the squat and bench, calculate the deadlift you need to hit your goal total.</li>
+          <li>Calculate the deadlift that you need to beat other lifters' Wilks or Malone scores and <strong><em>win the best lifter award!</em></strong></li>
+        </ul>
+        <br>
+
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Webpage maintained by <a href="https://github.com/ksingh05">Jeff Irion</a></p>
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+
+
+  </body>
+</html>
