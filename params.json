@@ -1,0 +1,6 @@
+{
+  "name": "Jeff Irion",
+  "tagline": "",
+  "body": "## About Me\r\n\r\nI received my Ph.D. in Applied Math from UC Davis in December 2015.  \r\n\r\n\r\n## Code, Projects, & Repos\r\n\r\n### [My Udacity Coursework](http://jefflirion.github.io/udacity/)\r\nAssignments and projects that I've done for data science courses offered by Udacity.  \r\n\r\n### [Multiscale Transforms for Signals on Graphs (MTSG) Toolbox for MATLAB](https://github.com/JeffLIrion/MTSG_Toolbox)\r\nThis toolbox contains implementations of the transforms and methods that I developed during my graduate research.  It can be used to easily reproduce figures from several publications as well as my dissertation.  \r\n\r\n### [Math Course Notes](http://jefflirion.github.io/Math-Course-Notes/)\r\nNotes from various courses that I took at UC Davis.  ",
+  "note": "Don't delete this file! It's used internally to help with page regeneration."
+}

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Publications &amp; Presentations : Selected publications and presentations from my graduate research in applied math.">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Sphinx + GitHub pages</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="home_banner" href="https://jefflirion.github.io/">JeffLIrion.github.io</a>
+          <h1 id="project_title">Sphinx + GitHub pages</h1>
+          <h2 id="project_tagline">Getting Sphinx and GitHub pages to play nicely together.</h2>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a id="sphinx--github-pages" class="anchor" href="#sphinx--github-pages" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Sphinx + GitHub pages</h1>
+
+<p>GitHub now allows you to host your documentation in the <code>docs</code> folder of the
+<code>master</code> branch, instead of requiring your documentation to be in the root
+folder of the <code>gh-pages</code> branch.  This makes it easier to host Sphinx
+documentation on GitHub.  However, the documentation must be in the <code>/docs/</code>
+folder, not a subfolder such as <code>/docs/build/html</code>.  Here's one way to work
+around this.</p><br>
+
+<h2>
+<a id="build-the-documentation-in-the-docs-folder" class="anchor" href="#build-the-documentation-in-the-docs-folder" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Build the documentation in the docs folder</h2>
+
+<p>I'll assume that you have not built the documentation yet.  (If you have, then
+I suggest adding <code>docs/build/</code> to the <strong>.gitignore</strong> file.)  The structure of
+your repo should look something like this:</p>
+
+<pre><code>&lt;repo name&gt;/
+|-- .gitignore
+|-- &lt;files &amp; folders&gt;
+|-- docs/
+:   |-- build/
+:   |-- source/
+:   |-- make.bat
+:   |-- Makefile
+</code></pre>
+
+<ol>
+<li>
+<p>In the docs folder, edit <code>Makefile</code> and <code>make.bat</code> as follows:</p>
+
+<p><strong>Makefile</strong></p>
+
+<div class="highlight highlight-source-shell"><pre><span class="pl-c"># BUILDDIR      = build</span>
+BUILDDIR      = ..</pre></div>
+
+<p><strong>make.bat</strong></p>
+
+<pre><code>REM set BUILDDIR=build
+set BUILDDIR=..
+</code></pre>
+</li>
+<li><p>Rename the <code>docs</code> folder to <code>html</code>.</p></li>
+<li>Build the documentation: <code>make html</code>.</li>
+<li>
+<p>Undo step #2: rename the <code>html</code> folder to <code>docs</code>.</p>
+
+<blockquote>
+<p>Steps 2-4 can be automated by defining a function such as:</p>
+
+<div class="highlight highlight-source-shell"><pre><span class="pl-en">make_docs</span> ()
+{
+  mv <span class="pl-k">&lt;</span>path to the repo<span class="pl-k">&gt;</span>/docs <span class="pl-k">&lt;</span>path to the repo<span class="pl-k">&gt;</span>/html
+  <span class="pl-c1">cd</span> <span class="pl-k">&lt;</span>path to the repo<span class="pl-k">&gt;</span>/html
+  cmd /c make.bat html
+  <span class="pl-c1">cd</span> -
+  mv <span class="pl-k">&lt;</span>path to the repo<span class="pl-k">&gt;</span>/html <span class="pl-k">&lt;</span>path to the repo<span class="pl-k">&gt;</span>/docs
+}</pre></div>
+</blockquote>
+</li>
+<li>
+<p>Add and commit all the changes.</p>
+
+<div class="highlight highlight-source-shell"><pre>git add -A
+git commit -m <span class="pl-s"><span class="pl-pds">"</span>&lt;commit message&gt;<span class="pl-pds">"</span></span></pre></div>
+</li>
+</ol>
+<br>
+
+<h2>
+<a id="create-a-source-code-only-branch" class="anchor" href="#create-a-source-code-only-branch" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Create a "source code only" branch</h2>
+
+<p>You may wish to have a branch that does not contain the documentation.  I'll
+call this branch <code>source_code</code>.  Here's a simple way to do that.</p>
+
+<ol>
+<li>
+<p>Create and checkout a new orphan branch.</p>
+
+<div class="highlight highlight-source-shell"><pre>git checkout -b source_code</pre></div>
+</li>
+<li>
+<p>Unstage all the files:</p>
+
+<div class="highlight highlight-source-shell"><pre>git reset</pre></div>
+</li>
+<li>
+<p>Add the documentation files to the <strong>.gitignore</strong> file.</p>
+
+<pre><code>docs/
+doctrees/
+</code></pre>
+</li>
+<li>
+<p>Now that the documentation files are ignored, add and commit all the files.</p>
+
+<div class="highlight highlight-source-shell"><pre>git add -A
+git commit -m <span class="pl-s"><span class="pl-pds">"</span>source_code initial commit<span class="pl-pds">"</span></span></pre></div>
+</li>
+</ol>
+<br>
+
+<h2>
+<a id="keep-the-source_code-branch-updated-with-master" class="anchor" href="#keep-the-source_code-branch-updated-with-master" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Keep the source_code branch updated with master</h2>
+
+<p>This is very similar to the previous section.  I'll assume that you haven't
+modified any files on the <code>source_code</code> branch.  </p>
+
+<div class="highlight highlight-source-shell"><pre><span class="pl-c"># switch to the `source_code` branch</span>
+git checkout source_code
+
+<span class="pl-c"># checkout all the files from the `master` branch</span>
+git checkout master -- <span class="pl-c1">.</span>
+
+<span class="pl-c"># unstage all the changes</span>
+git reset HEAD <span class="pl-c1">.</span>
+
+<span class="pl-c"># checkout the `source_code` version of `.gitignore`</span>
+git checkout source_code .gitignore
+
+<span class="pl-c"># add and commit all the changes retrieved from the `master` branch</span>
+git add -A
+git commit -m <span class="pl-s"><span class="pl-pds">"</span>&lt;commit message&gt;<span class="pl-pds">"</span></span></pre></div>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Webpage maintained by <a href="https://github.com/JeffLIrion">JeffLIrion</a></p>
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+
+
+  </body>
+</html>
