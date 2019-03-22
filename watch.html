@@ -1,0 +1,242 @@
+
+<script>
+	var demo_name = "Box"
+	var st_localname = "QX-ZECR"; /* Name of SensorTile goes here */
+	var classlabel2str = {
+		0: "Bike",
+		1: "Rest",
+		2: "Run",
+		3: "Walk",
+	};
+	var imgs = {
+		"Run": "img/box-Moved.png",
+		"Rest": "img/box-Impact.png",
+		"Walk": "img/box-Resting.png",
+		"Bike": "img/box-Resting-Not-Upright.png",
+		"Shaken": "img/box-Shaken.png",
+		"Airborne": "img/box-Airborne.png"
+	};
+	var long_display_classes = { /* key: label, val: number of iterations to display class */
+		"Rest": 6
+		// "Rest": 3,
+	 //    "Run": 3,
+	 //    "Walk": 3 /* display impace for 12 150ms intervals */
+	};
+	var never_display_classes = [ /* list of labels (strings) */
+	];
+	var video_link = '/Users/jesse/tmp/box.mp4'; /* set to null to never play video */
+	var video_timeout = 30; /* seconds of continuous "Resting" or "Resting - Not Upright" classification until video starts playing */
+</script>
+
+<body>
+	<button id = "pair_button" onclick = "readFromSensorTile()">Button Text Goes Here</button>
+	<video id = "video" controls loop autoplay muted>
+		<source src = "box.mp4" type = "video/mp4" id = "video-source"/>
+	</video>
+	<div id = "prediction-display"></div>
+	<div id = "sensor-display">
+		<img class = "envsens-icon temperature" src = "img/box-icon-temperature.png"/>
+		<img class = "envsens-icon humidity"    src = "img/box-icon-humidity.png"/>
+		<img class = "envsens-icon pressure"    src = "img/box-icon-pressure.png"/>
+		<div class = "envsens-value temperature">72.3°F</div>
+		<div class = "envsens-value humidity">32%</div>
+		<div class = "envsens-value pressure">98.28 kPa</div>
+	</div>
+</body>
+
+
+<style>
+@font-face {
+    font-family: ProximaNova;
+    src: url("font/proximanovaREGULAR.otf") format("opentype");
+}
+body {
+	font-family: ProximaNova;
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-color: black;
+	background-position: center;
+	margin: 0px;
+}
+#video {
+	display: none;
+	position: fixed;
+	margin: auto;
+	height: 100%;
+	z-index: 1;
+}
+#prediction-display {
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-color: black;
+	width: 100%;
+	height: 100%;
+}
+#sensor-display {
+	background-image: url("img/box-envsens-background.png");
+	background-size: 515px;
+	width: 519px;
+	height: 1005px;
+    position: fixed;
+    top: 29px;
+    left: 1350px;
+    font-size: 22px;
+}
+.envsens-icon {
+	position: fixed;
+	left: 1419px;
+	width: 100px;
+	height: 100px;
+}
+.envsens-value {
+	color: white;
+	font-size: 61px;
+	position: fixed;
+	left: 1534px;
+}
+.envsens-icon.temperature {
+	top: 171px;
+}
+.envsens-value.temperature {
+	top: 186px;
+}
+.envsens-icon.humidity {
+	top: 508px;
+}
+.envsens-value.humidity {
+	top: 521px;
+}
+.envsens-icon.pressure {
+	top: 835px;
+}
+.envsens-value.pressure {
+	top: 854px;
+}
+</style>
+
+
+<script>
+
+	/* load video */
+	var video_source = document.getElementById('video-source');
+	video_source.src = video_link;
+	var video = document.getElementById('video');
+
+	/* set button text to notify what SensorTile go with this demo */
+	var button = document.getElementById('pair_button');
+	button.innerHTML = 'Pair with SensorTile ' + st_localname + ' for ' + demo_name + ' Demo';
+
+	var n_displays_left = 0;
+	var last_time_of_not_resting = null;
+
+	/* src: https://developers.google.com/web/updates/2015/07/interact-with-ble-devices-on-the-web */
+	var service_uuid = '00618b72-a321-389d-8849-cd74f9f0f4eb';
+	var characteristic_uuid = '10618b72-a321-389d-8849-cd74f9f0f4eb';
+	function readFromSensorTile() {
+		navigator.bluetooth.requestDevice({
+			filters: [{
+		    	name: st_localname
+			}],
+			optionalServices: [service_uuid]
+		})
+		.then(device => device.gatt.connect())
+		.then(server => {
+			return server.getPrimaryService(service_uuid);
+		})
+		.then(service => {
+			return service.getCharacteristic(characteristic_uuid);
+		})
+		.then(characteristic => {
+
+			/* notify connected */
+			document.getElementById("pair_button").style.display = "none";
+
+			characteristic.addEventListener('characteristicvaluechanged', handleCharacteristicValueChanged);
+			setInterval(function() {
+				characteristic.readValue();
+			}, 150);
+		})
+		.catch(error => { console.log(error); });
+	}
+
+	function handleCharacteristicValueChanged(event) {
+		var bytearray = event.target.value;
+		var cls = bytearray.getUint8(0);
+		var littleEndian = true;
+		var temperature = bytearray.getInt16(1, littleEndian) / 10;
+		var humidity = bytearray.getUint16(3, littleEndian) / 10;
+		var pressure = bytearray.getInt32(5, littleEndian) / 1000; /* convert from Pa to kPa */
+
+		/* convert temperature to Fahrenheit */
+		temperature = temperature * 9/5 + 32;
+
+		var label = classlabel2str[cls];
+		dom_elem = document.getElementById('label');
+		console.log('Received class ' + cls);
+
+		/*console.log(label)*/
+		if (label in long_display_classes) {
+			if (n_displays_left==0) {
+				n_displays_left = long_display_classes[label];
+				display_label = label;
+			}
+
+		}
+
+		if (n_displays_left > 0) {
+			changeDisplayLabel(dom_elem, display_label);
+			n_displays_left--;
+		} else if (!(never_display_classes.includes(label))) {
+			changeDisplayLabel(dom_elem, label);
+		}
+
+		/* Update Environmental Sensor Display */
+		updateEnvironmentalSensors(temperature, humidity, pressure);
+
+		/* Display video */
+		if (last_time_of_not_resting === null) {
+			/* set the last time of not resting as current time if first time classifying */
+			last_time_of_not_resting = new Date().getTime() / 1000;
+		}
+		if (label !== "Resting" && label !== "Resting - Not Upright") {
+			last_time_of_not_resting = new Date().getTime() / 1000;
+			if (video.style.display !== "none") {
+				/* stop displaying video if currently displaying */
+				video.style.display = "none";
+			}
+		} else {
+			var current_time = new Date().getTime() / 1000;
+			if (current_time - last_time_of_not_resting >= video_timeout) {
+				/* should be displaying video */
+				if (video.style.display === "none" && video_link !== null) {
+					/* video was not displayed but should now be restarted and displayed */
+					video.style.display = "block";
+					video.currentTime = 0; /* restart video */
+				}
+			}
+		}
+	}
+
+	function changeDisplayLabel(dom, label) {
+		if (label in imgs) {
+			dom_prediction_display = document.getElementById("prediction-display");
+			cur_background_image = dom_prediction_display.style.backgroundImage
+			new_background_image = "url('" + imgs[label] + "')"
+			if (cur_background_image !== new_background_image) {
+				dom_prediction_display.style.backgroundImage = new_background_image;
+			}
+		} else if (dom.innerHTML !== label) {
+			dom.innerHTML = label;
+		}
+	}
+
+	var temp_display = document.getElementsByClassName('envsens-value temperature')[0];
+	var humid_display = document.getElementsByClassName('envsens-value humidity')[0];
+	var press_display = document.getElementsByClassName('envsens-value pressure')[0];
+	function updateEnvironmentalSensors(temperature, humidity, pressure) {
+		temp_display.innerHTML = temperature.toFixed(1) + "°F";
+		humid_display.innerHTML = humidity.toFixed(1) + "%";
+		press_display.innerHTML = pressure.toFixed(2) + " kPa";
+	}
+</script>
